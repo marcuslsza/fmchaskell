@@ -26,7 +26,7 @@ eight = S seven
 -- addition
 (+) :: Nat -> Nat -> Nat
 n + O   = n
-n + S m = S (n + m)
+n + (S m) = S (n + m)
 
  -- syntactic associativity: L
  -- syntactic precedence: 6
@@ -34,44 +34,55 @@ infixl 6 +
 
 -- Output: O means False, S O means True
 isZero :: Nat -> Nat
-isZero = undefined
+isZero O = S O
+isZero (S n) = O
 
 -- pred is the predecessor but we define zero's to be zero
 pred :: Nat -> Nat
-pred = undefined
+pred O = O
+pred (S n) = n
 
 -- Output: O means False, S O means True
 even :: Nat -> Nat
-even = undefined
+even O = S O 
+even (S O) = O
+even (S (S n)) = even n
 
 odd :: Nat -> Nat
-odd = undefined
+odd O = O
+odd (S O) = S O
+odd (S (S n)) = odd n
 
 -- This is called the dotminus or monus operator
 -- (also: proper subtraction, arithmetic subtraction, ...).
 -- It behaves like subtraction, except that it returns 0
 -- when "normal" subtraction would return a negative number.
 monus :: Nat -> Nat -> Nat
-monus = undefined
+monus O n = O
+monus n O = n
+monus (S n) (S m) = monus n m
 
 (-*) :: Nat -> Nat -> Nat
 (-*) = monus
 
 -- multiplication
 (*) :: Nat -> Nat -> Nat
-(*) = undefined
+n * O = O
+n * (S O) = n
 
 infixl 7 *
 
 -- exponentiation
 (^) :: Nat -> Nat -> Nat
-(^) = undefined
+n ^ O = S O
+n ^ S O = n
 
--- decide: infix? ? ^
+infixl 8 ^
 
 -- quotient
 (/) :: Nat -> Nat -> Nat
-(/) = undefined
+O / n = O
+n / (S O) = n
 
 -- remainder
 (%) :: Nat -> Nat -> Nat
@@ -93,7 +104,9 @@ absDiff = undefined
 (|-|) = absDiff
 
 factorial :: Nat -> Nat
-factorial = undefined
+factorial O = S O
+factorial (S O) = S O
+factorial (S n) = S n * factorial n
 
 -- signum of a number (-1, 0, or 1)
 sg :: Nat -> Nat
