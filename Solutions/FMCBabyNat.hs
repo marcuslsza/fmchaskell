@@ -69,6 +69,7 @@ monus (S n) (S m) = monus n m
 (*) :: Nat -> Nat -> Nat
 n * O = O
 n * (S O) = n
+n * (S m) = n * m + n
 
 infixl 7 *
 
@@ -76,13 +77,16 @@ infixl 7 *
 (^) :: Nat -> Nat -> Nat
 n ^ O = S O
 n ^ S O = n
+n ^ (S m) = n ^ m * n
 
 infixl 8 ^
 
 -- quotient
 (/) :: Nat -> Nat -> Nat
-O / n = O
+n / O = undefined
 n / (S O) = n
+S n / (S m) = undefined
+
 
 -- remainder
 (%) :: Nat -> Nat -> Nat
@@ -98,7 +102,9 @@ n / (S O) = n
 -- x `absDiff` y = |x - y|
 -- (Careful here: this - is the actual minus operator we know from the integers!)
 absDiff :: Nat -> Nat -> Nat
-absDiff = undefined
+absDiff O m = m 
+absDiff (S n) (S m) = monus n m
+
 
 (|-|) :: Nat -> Nat -> Nat
 (|-|) = absDiff
