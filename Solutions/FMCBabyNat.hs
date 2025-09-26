@@ -68,7 +68,6 @@ monus (S n) (S m) = monus n m
 -- multiplication
 (*) :: Nat -> Nat -> Nat
 n * O = O
-n * (S O) = n
 n * (S m) = n * m + n
 
 infixl 7 *
@@ -84,8 +83,9 @@ infixl 8 ^
 -- quotient
 (/) :: Nat -> Nat -> Nat
 n / O = undefined
+O / n = O
 n / (S O) = n
-S n / (S m) = undefined
+n / m  = S((n -* m)/m)
 
 
 -- remainder
@@ -102,8 +102,9 @@ S n / (S m) = undefined
 -- x `absDiff` y = |x - y|
 -- (Careful here: this - is the actual minus operator we know from the integers!)
 absDiff :: Nat -> Nat -> Nat
-absDiff O m = m 
-absDiff (S n) (S m) = monus n m
+absDiff O m = m
+absDiff m O = m 
+absDiff (S n) (S m) = absDiff n m
 
 
 (|-|) :: Nat -> Nat -> Nat
@@ -116,7 +117,8 @@ factorial (S n) = S n * factorial n
 
 -- signum of a number (-1, 0, or 1)
 sg :: Nat -> Nat
-sg = undefined
+sg O = O
+sg (S n) = S O
 
 -- lo b a is the floor of the logarithm base b of a
 lo :: Nat -> Nat -> Nat
