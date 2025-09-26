@@ -80,13 +80,19 @@ n ^ (S m) = n ^ m * n
 
 infixl 8 ^
 
+-- defining less than 
+(<) :: Nat -> Nat -> Nat
+n < O = O
+O < n = S O
+
+
 -- quotient
 (/) :: Nat -> Nat -> Nat
 n / O = undefined
 O / n = O
-n / (S O) = n
-n / m  = S((n -* m)/m)
-
+n / m  =  case n < m of
+            S O -> O
+            O -> S((n -* m)/m)
 
 -- remainder
 (%) :: Nat -> Nat -> Nat
