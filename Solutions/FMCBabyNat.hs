@@ -80,7 +80,7 @@ n ^ (S m) = n ^ m * n
 
 infixl 8 ^
 
--- defining less than 
+-- defining less than (important for quotient definition!)
 (<) :: Nat -> Nat -> Nat
 n < O = O
 O < n = S O
