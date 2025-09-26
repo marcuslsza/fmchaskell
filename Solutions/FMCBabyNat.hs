@@ -84,7 +84,7 @@ infixl 8 ^
 (<) :: Nat -> Nat -> Nat
 n < O = O
 O < n = S O
-
+(S n) < (S m) = n < m
 
 -- quotient
 (/) :: Nat -> Nat -> Nat
@@ -96,14 +96,16 @@ n / m  =  case n < m of
 
 -- remainder
 (%) :: Nat -> Nat -> Nat
-(%) = undefined
+n % m = n-*(m*(n/m))
 
 -- divides
 -- just for a change, we start by defining the "symbolic" operator
 -- and then define `devides` as a synonym to it
 -- again, outputs: O means False, S O means True
 (|||) :: Nat -> Nat -> Nat
-(|||) = undefined
+n ||| m = case O < (n%m) of
+            S O -> O
+            O -> S O
 
 -- x `absDiff` y = |x - y|
 -- (Careful here: this - is the actual minus operator we know from the integers!)
@@ -128,5 +130,9 @@ sg (S n) = S O
 
 -- lo b a is the floor of the logarithm base b of a
 lo :: Nat -> Nat -> Nat
-lo = undefined
+lo O a = undefined
+lo b O = undefined
+lo b (S O) = O
+lo (S O) a = undefined
+lo b a = S (lo b (a/b))
 
