@@ -35,7 +35,7 @@ instance Show Nat where
     -- three should be shown as SSSO
     show O = "O"
     show (S n) = "S" ++ show n
-    
+
 
 instance Eq Nat where
 
@@ -59,9 +59,9 @@ instance Ord Nat where
 
     min :: Nat -> Nat -> Nat
     min n m = if (n-*m) == (O-*n) then n else m
-    
+
     max :: Nat -> Nat -> Nat
-    max n m = if (n-*m) == (O-*n) then m else n 
+    max n m = if (n-*m) == (O-*n) then m else n
 
 
 ----------------------------------------------------------------
@@ -141,49 +141,57 @@ pow n O = S O
 pow n (S m) = pow n m <*> n
 
 exp :: Nat -> Nat -> Nat
-exp = undefined
+exp = pow
 
 (<^>) :: Nat -> Nat -> Nat
 (<^>) = pow
 
 -- quotient
 (</>) :: Nat -> Nat -> Nat
-(</>) = undefined
+n </> O = undefined
+O </> n = O
+n </> m  =  if n < m then O else S ((n -* m)</>m)
 
 -- remainder
 (<%>) :: Nat -> Nat -> Nat
-(<%>) = undefined
+n <%> m = n-*(m<*>(n</>m))
 
 -- euclidean division
 eucdiv :: (Nat, Nat) -> (Nat, Nat)
-eucdiv = undefined
+eucdiv (n, m) = (n </> m, n <%> m)
 
 -- divides
 (<|>) :: Nat -> Nat -> Bool
-(<|>) = undefined
+n <|> m = if O < (n<%>m) then False else True
 
 divides = (<|>)
-
-
 -- distance between nats
 -- x `dist` y = |x - y|
 -- (Careful here: this - is the real minus operator!)
 dist :: Nat -> Nat -> Nat
-dist = undefined
+dist n O = n 
+dist O n = n
+dist (S n) (S m) = dist n m
 
 (|-|) = dist
 
 factorial :: Nat -> Nat
-factorial = undefined
+factorial O = S O
+factorial (S O) = S O
+factorial (S n) = S n * factorial n
 
 -- signum of a number (-1, 0, or 1)
 sg :: Nat -> Nat
-sg = undefined
+sg O = O
+sg (S n) = S O
 
 -- lo b a is the floor of the logarithm base b of a
 lo :: Nat -> Nat -> Nat
-lo = undefined
-
+lo O a = undefined
+lo b O = undefined
+lo b (S O) = O
+lo (S O) a = undefined
+lo b a = S (lo b (a</>b))
 
 ----------------------------------------------------------------
 -- Num & Integral fun
@@ -193,10 +201,13 @@ lo = undefined
 -- Do NOT use the following functions in the definitions above!
 
 toNat :: Integral a => a -> Nat
-toNat = undefined
+toNat 0 = O
+toNat x = if x < 0 then undefined else S (toNat(x-1))
+
 
 fromNat :: Integral a => Nat -> a
-fromNat = undefined
+fromNat O = 0
+fromNat (S n) = fromNat n + 1
 
 
 -- Voilá: we can now easily make Nat an instance of Num.
@@ -209,6 +220,6 @@ instance Num Nat where
     signum = sg
     fromInteger x
       | x < 0     = undefined
-      | x == 0    = undefined
-      | otherwise = undefined
+      | x == 0    = O
+      | otherwise = S (fromInteger (x-1))
 
