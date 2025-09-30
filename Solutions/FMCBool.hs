@@ -30,9 +30,12 @@ instance Show Bool where
     show False  = "False"
 
 instance Enum Bool where
+    
     toEnum 1 = True
+    toEnum 0 = False
 
     fromEnum False = 0
+    fromEnum True = 1
 
 -- conjunction (AND)
 (&&) :: Bool -> Bool -> Bool
