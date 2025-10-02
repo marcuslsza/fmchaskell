@@ -82,7 +82,7 @@ product (x:xs) = product xs * x
 
 reverse :: [a] -> [a]
 reverse [] = []
-reverse (x:xs) = undefined
+reverse (x:xs) = reverse xs ++ [x] 
 
 
 (++) :: [a] -> [a] -> [a]
@@ -95,7 +95,8 @@ infixr 5 ++
 
 -- (snoc is cons written backwards)
 snoc :: a -> [a] -> [a]
-snoc = undefined
+snoc x xs = undefined
+
 
 (<:) :: [a] -> a -> [a]
 (<:) = flip snoc
