@@ -192,8 +192,6 @@ map f (x:xs) = (f x):map f xs
 
 -- checks if the letters of a phrase form a palindrome (see below for examples)
 palindrome :: String -> Bool
-palindrome "" = True
-palindrome _ = undefined
 
 {-
 

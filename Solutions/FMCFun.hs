@@ -17,7 +17,7 @@ curry f a b = f (a, b)
 
 -- uncurry takes a currified function
 -- and returns its "traditional" binary version
-uncurry :: (a -> b -> c) -> ((a, b) -> c) 
+uncurry :: (a -> b -> c) -> ((a, b) -> c)
 uncurry f (a, b) = f a b
 
 
@@ -27,14 +27,23 @@ uncurry f (a, b) = f a b
 -- (.) takes two composable functions and returns their composition
 
 -- (.>) is composition but in diagramatic notation (should be ; but Haskell forbids)
+flip :: (a -> b -> c) -> (b -> a -> c)
+flip f b a = f a b
+
+(.) :: (b -> c) -> (a -> b) -> (a -> c)
+(.) f g a = f(g a)
+
 (.>) = flip (.)
 
 -- ($) takes a function and a suitable argument and applies the function to the argument
 -- think: why would we ever want that?
+($) :: (a -> b) -> a -> b
+($) f = f
+
 
 -- iterate: figure it out by its type
 iterate :: (a -> a) -> a -> [a]
-iterate = undefined
+iterate f a = a : iterate f (f a)
 
 -- orbit
 orbit = flip iterate
