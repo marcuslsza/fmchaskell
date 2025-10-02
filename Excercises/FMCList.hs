@@ -13,7 +13,6 @@ import Prelude
 import qualified Prelude   as P
 import qualified Data.List as L
 import qualified Data.Char as C
-import FMCNat
 
 {- import qualified ... as ... ?
 
@@ -59,46 +58,36 @@ write [u,v]     for our u `Cons` (v `Cons` Nil)
 -}
 
 head :: [a] -> a
-head (x:xs) = x
+head = undefined
 
 tail :: [a] -> [a]
-tail (x:xs) = xs
+tail = undefined
 
 null :: [a] -> Bool
-null [] = True
-null xs = False
+null = undefined
 
-length :: [a] -> Nat
-length [] = 0
-length (_:xs) = length xs + 1
-
+length :: Integral i => [a] -> i
+length = undefined
 
 sum :: Num a => [a] -> a
-sum [] = 0
-sum (x:xs) = sum xs + x
+sum = undefined
 
 product :: Num a => [a] -> a
-product [] = 1
-product (x:xs) = product xs * x
+product = undefined
 
 reverse :: [a] -> [a]
-reverse [] = []
-reverse (x:xs) = reverse xs ++ [x]
-
+reverse = undefined
 
 (++) :: [a] -> [a] -> [a]
-[] ++ xs = xs
-(x:xs) ++ ys = x:(xs++ys)
+(++) = undefined
 
 -- right-associative for performance!
 -- (what?!)
 infixr 5 ++
 
-
 -- (snoc is cons written backwards)
 snoc :: a -> [a] -> [a]
-snoc x [] = [x]
-snoc x (a:as) = (a:as) ++ [x]
+snoc = undefined
 
 (<:) :: [a] -> a -> [a]
 (<:) = flip snoc
@@ -113,20 +102,10 @@ xs +++ (y:ys) = (xs +++ [y]) +++ ys
 -- (hmm?!)
 infixl 5 +++
 
-minimum :: Ord a => [a] -> a
-minimum [a] = a
-minimum (x:xs) = min x (minimum xs)
+-- minimum :: Ord a => [a] -> a
+-- maximum :: Ord a => [a] -> a
 
-maximum :: Ord a => [a] -> a
-maximum [a] = a
-maximum (x:xs) = max x (maximum xs)
-
-take :: a -> [a] -> [a]
-take n [] = []
-take n (x:xs) = undefined
-
-
-
+-- take
 -- drop
 
 -- takeWhile
@@ -146,22 +125,15 @@ take n (x:xs) = undefined
 
 -- concat
 
--- elem using the funciton 'any' above 
+-- elem using the funciton 'any' above
 
 -- elem': same as elem but elementary definition
 -- (without using other functions except (==))
 
 -- (!!)
 
--- filter (analyzes bool condition; "a < 3")
-filter :: (a -> Bool) -> [a] -> [a]
-filter f [] = error "empty list"
-filter f (x:xs) = if f x then x:filter f xs else filter (f xs)
-
-
-map :: (a -> b) -> ([a] -> [b])
-map f [] = error "empty list"
-map f (x:xs) = (f x):map f xs
+-- filter
+-- map
 
 -- cycle
 -- repeat
@@ -192,8 +164,7 @@ map f (x:xs) = (f x):map f xs
 
 -- checks if the letters of a phrase form a palindrome (see below for examples)
 palindrome :: String -> Bool
-palindrome "" = True
-palindrome _ = undefined
+palindrome = undefined
 
 {-
 
