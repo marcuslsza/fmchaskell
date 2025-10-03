@@ -1,4 +1,6 @@
 {-# LANGUAGE GADTs #-}
+{-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
+{-# HLINT ignore "Use map" #-}
 
 module FMCList where
 
@@ -14,6 +16,8 @@ import qualified Prelude   as P
 import qualified Data.List as L
 import qualified Data.Char as C
 import FMCNat
+
+
 
 {- import qualified ... as ... ?
 
@@ -68,7 +72,7 @@ null :: [a] -> Bool
 null [] = True
 null xs = False
 
-length :: [a] -> Nat
+length :: [a] -> Int
 length [] = 0
 length (_:xs) = length xs + 1
 
@@ -115,15 +119,16 @@ infixl 5 +++
 
 minimum :: Ord a => [a] -> a
 minimum [a] = a
-minimum (x:xs) = min x (minimum xs)
+--minimum (x:xs) = if x < minimum xs then undefined
 
 maximum :: Ord a => [a] -> a
 maximum [a] = a
-maximum (x:xs) = max x (maximum xs)
+maximum (x:xs) = undefined
 
-take :: a -> [a] -> [a]
+--total elements - n = check number
+take :: Int -> [a] -> [a]
 take n [] = []
-take n (x:xs) = undefined
+take n (x:xs) = if length (x:xs) > n then x:take n xs else undefined
 
 
 
@@ -156,7 +161,7 @@ take n (x:xs) = undefined
 -- filter (analyzes bool condition; "a < 3")
 filter :: (a -> Bool) -> [a] -> [a]
 filter f [] = error "empty list"
-filter f (x:xs) = if f x then x:filter f xs else filter (f xs)
+--filter f (x:xs) = if f x then x:filter f xs else filter (f xs)
 
 
 map :: (a -> b) -> ([a] -> [b])
@@ -192,6 +197,7 @@ map f (x:xs) = (f x):map f xs
 
 -- checks if the letters of a phrase form a palindrome (see below for examples)
 palindrome :: String -> Bool
+palindrome = undefined
 
 {-
 
