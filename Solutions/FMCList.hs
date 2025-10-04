@@ -118,26 +118,39 @@ xs +++ (y:ys) = (xs +++ [y]) +++ ys
 infixl 5 +++
 
 minimum :: Ord a => [a] -> a
+minimum [] = error "Lista vazia"
 minimum [a] = a
---minimum (x:xs) = if x < minimum xs then undefined
+minimum (x:xs) = if x < minimum xs then x else minimum xs
 
 maximum :: Ord a => [a] -> a
+maximum [] = error "Lista vazia"
 maximum [a] = a
-maximum (x:xs) = undefined
+maximum (x:xs) = if x > maximum xs then x else maximum xs
 
---total elements - n = check number
 take :: Int -> [a] -> [a]
-take n [] = []
-take n (x:xs) = if length (x:xs) > n then x:take n xs else undefined
+take 0 _ = [] 
+take n [] = error "Lista vazia"
+take n (x:xs) = x:take (n-1) xs
+
+drop :: Nat -> [a] -> [a]
+-- drop 2 [1,2,3,4] = drop 1 [2,3,4] = drop 0 [3,4] = [3,4]
+drop _ [] = []
+drop 0 (x:xs) = x:xs
+drop n (x:xs) = drop (n-1) xs
+
+takeWhile :: (a -> Bool) -> [a] -> [a]
+--takeWhile (> 5) [6,8,7,2,1] = [6,8,7]
+takeWhile _ [] = []  
+takeWhile f (x:xs) = if f x then x:takeWhile f xs else []
 
 
-
--- drop
-
--- takeWhile
 -- dropWhile
 
--- tails
+tails :: [a] -> [[a]]
+tails [] = []
+tails (x:xs) = xs:tails xs 
+
+
 -- init
 -- inits
 
@@ -160,17 +173,23 @@ take n (x:xs) = if length (x:xs) > n then x:take n xs else undefined
 
 -- filter (analyzes bool condition; "a < 3")
 filter :: (a -> Bool) -> [a] -> [a]
-filter f [] = error "empty list"
---filter f (x:xs) = if f x then x:filter f xs else filter (f xs)
+filter f [] = []
+filter f (x:xs) = if f x then x:filter f xs else filter f xs
 
 
-map :: (a -> b) -> ([a] -> [b])
-map f [] = error "empty list"
-map f (x:xs) = (f x):map f xs
+map :: (a -> b) -> [a] -> [b]
+-- map (*2) [1,2,3,4] returns [2,4,6,8]
+map f [] = []
+map f (x:xs) = f x : map f xs
 
--- cycle
--- repeat
--- replicate
+cycle :: [a] -> [a]
+cycle [] = error "Lista vazia"
+cycle (x:xs) = x:xs ++ cycle (x:xs)
+
+repeat :: a -> [a]
+repeat n = n:repeat n
+
+replicate :: Int -> a -> [a]
 
 -- isPrefixOf
 -- isInfixOf
