@@ -18,7 +18,6 @@ import qualified Data.Char as C
 import FMCNat
 
 
-
 {- import qualified ... as ... ?
 
 To use a function from a qualified import
@@ -135,7 +134,7 @@ take n (x:xs) = x:take (n-1) xs
 drop :: Nat -> [a] -> [a]
 -- drop 2 [1,2,3,4] = drop 1 [2,3,4] = drop 0 [3,4] = [3,4]
 drop _ [] = []
-drop 0 (x:xs) = x:xs
+drop 0 xs = xs
 drop n (x:xs) = drop (n-1) xs
 
 takeWhile :: (a -> Bool) -> [a] -> [a]
@@ -143,24 +142,48 @@ takeWhile :: (a -> Bool) -> [a] -> [a]
 takeWhile _ [] = []  
 takeWhile f (x:xs) = if f x then x:takeWhile f xs else []
 
+dropWhile :: (a -> Bool) -> [a] -> [a]
+dropWhile f (x:xs) = if f x then dropWhile f xs else x:xs
 
--- dropWhile
 
 tails :: [a] -> [[a]]
 tails [] = []
 tails (x:xs) = xs:tails xs 
 
 
--- init
--- inits
+init :: [a] -> [a]
+init [] = error "Lista vazia"
+init [a] = []
+init (x:xs) = x:init xs 
 
--- subsequences
+inits :: [a] -> [[a]]
+inits [] = [[]]
+-- usa map pra aplicar a função x: em inits xs 
+inits (x:xs) = []:map (x:) (inits xs)
 
--- any
--- all
+-- subsequences (?)
 
--- and
--- or
+any :: (a -> Bool) -> [a] -> Bool
+-- any (> 3) [1,2,3,4] = any (> 3) [2,3,4] = any (> 3) [3,4] = any (> 3) [4] => x := 4 && 4 > 3 => True
+any f [] = False
+any f (x:xs) = if f x then True else any f xs
+
+all :: (a -> Bool) -> [a] -> Bool
+-- all (> 3) [1,2,3,4] 
+all f [] = True
+all f (x:xs) = if f x then all f xs else False
+
+
+and :: [Bool] -> Bool 
+-- and [True, True] = and [True] = and [] = True
+and [] = True
+and (x:xs) = if x == True then and xs else False
+
+or :: [Bool] -> Bool
+-- or [False, False] = or [False] = False
+or [False] = False
+or (x:xs) = if x == True then True else or xs 
+
 
 -- concat
 
@@ -190,9 +213,16 @@ repeat :: a -> [a]
 repeat n = n:repeat n
 
 replicate :: Int -> a -> [a]
+replicate 0 _ = []
+replicate n a = a:replicate (n-1) a
 
--- isPrefixOf
+isPrefixOf :: Eq a => [a] -> [a] -> Bool
+isPrefixOf [] xs = True
+isPrefixOf xs [] = False
+isPrefixOf (x:xs) (y:ys) = if x == y then isPrefixOf xs ys else False
+
 -- isInfixOf
+
 -- isSuffixOf
 
 -- zip
