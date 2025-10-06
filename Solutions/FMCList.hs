@@ -17,7 +17,6 @@ import qualified Data.List as L
 import qualified Data.Char as C
 import FMCNat
 
-
 {- import qualified ... as ... ?
 
 To use a function from a qualified import
@@ -185,7 +184,11 @@ or [False] = False
 or (x:xs) = if x == True then True else or xs 
 
 
--- concat
+concat :: [[a]] -> [a]
+concat [] = [] 
+concat (x:xs) = x ++ concat xs
+
+
 
 elem :: Eq a => a -> [a] -> Bool
 elem _ [] = False
@@ -254,7 +257,6 @@ intercalate _ [a] = a
 intercalate x (y:ys) = y ++ x ++ intercalate x ys
 
 nub :: Eq a => [a] -> [a]
---nub [1,2,2,3,4]
 nub = undefined
 
 
@@ -263,6 +265,9 @@ splitAt 0 xs = ([], xs)
 splitAt _ [] = ([], [])
 -- usando "let in" para decompor a tupla:
 splitAt n (x:xs) = if n > 0 then let (ys, zs) = splitAt (n-1) xs in (x:ys, zs) else ([], x:xs)
+
+
+
 
 -- what is the problem with the following?:
 -- splitAt n xs  =  (take n xs, drop n xs)
@@ -278,7 +283,8 @@ break f (x:xs) = if f x then ([], x:xs) else let (ys, zs) = break f xs in (x:ys,
 -- unlines
 -- unwords
 
--- transpose
+transpose :: [[a]] -> [[a]]
+transpose = undefined
 
 -- checks if the letters of a phrase form a palindrome (see below for examples)
 palindrome :: String -> Bool
