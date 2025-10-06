@@ -131,7 +131,7 @@ take 0 _ = []
 take n [] = error "Lista vazia"
 take n (x:xs) = x:take (n-1) xs
 
-drop :: Nat -> [a] -> [a]
+drop :: Int -> [a] -> [a]
 -- drop 2 [1,2,3,4] = drop 1 [2,3,4] = drop 0 [3,4] = [3,4]
 drop _ [] = []
 drop 0 xs = xs
@@ -187,12 +187,24 @@ or (x:xs) = if x == True then True else or xs
 
 -- concat
 
--- elem using the funciton 'any' above 
+elem :: Eq a => a -> [a] -> Bool
+elem _ [] = False
+elem n (x:xs) = any (== n) (x:xs)
 
 -- elem': same as elem but elementary definition
 -- (without using other functions except (==))
 
--- (!!)
+elem' :: Eq a => a -> [a] -> Bool 
+elem' _ [] = False 
+elem' n (x:xs) = if n == x then True else elem' n xs
+
+
+(!!) :: [a] -> Int -> a
+-- res 3 <= (!!) 2 [1,2,3,4] = 
+(!!) [] _ = error "Lista vazia"
+(!!) (x:xs) 0 = x
+(!!) (x:xs) n = (!!) xs (n-1)
+
 
 -- filter (analyzes bool condition; "a < 3")
 filter :: (a -> Bool) -> [a] -> [a]
@@ -225,17 +237,41 @@ isPrefixOf (x:xs) (y:ys) = if x == y then isPrefixOf xs ys else False
 
 -- isSuffixOf
 
--- zip
--- zipWith
+zip :: [a] -> [a] -> [a]
+zip [] xs = xs
+zip xs [] = xs
+zip (x:xs) (y:ys) = x:y:zip xs ys
 
--- intercalate
--- nub
 
--- splitAt
+zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
+zipWith _ xs [] = []
+zipWith _ [] xs = []
+zipWith f (x:xs) (y:ys) = f x y:zipWith f xs ys
+
+intercalate :: String -> [String] -> String
+intercalate _ [] = ""
+intercalate _ [a] = a
+intercalate x (y:ys) = y ++ x ++ intercalate x ys
+
+nub :: Eq a => [a] -> [a]
+--nub [1,2,2,3,4]
+nub = undefined
+
+
+splitAt :: Int -> [a] -> ([a], [a])
+splitAt 0 xs = ([], xs)
+splitAt _ [] = ([], [])
+-- usando "let in" para decompor a tupla:
+splitAt n (x:xs) = if n > 0 then let (ys, zs) = splitAt (n-1) xs in (x:ys, zs) else ([], x:xs)
+
 -- what is the problem with the following?:
 -- splitAt n xs  =  (take n xs, drop n xs)
+-- resposta: não há uma condição para o caso de n > length xs, resultando em um erro de callstack. 
 
--- break
+break :: (a -> Bool) -> [a] -> ([a], [a])
+-- break (== 3) [1,2,3,4] = [1], break (== 3) [2,3,4] = [1,2], break (== 3) [3,4] = ([1,2], [3,4]).
+break _ [] = ([], [])    
+break f (x:xs) = if f x then ([], x:xs) else let (ys, zs) = break f xs in (x:ys, zs)
 
 -- lines
 -- words
